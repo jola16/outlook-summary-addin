@@ -135,7 +135,11 @@
     <div id="tabs">
       <button class="tab-btn active" onclick="switchTab('actions')" id="tab-actions"></button>
       <button class="tab-btn"        onclick="switchTab('summary')" id="tab-summary"></button>
-      <button id="pin-btn" onclick="togglePin()" title="Pin taskpane">📌</button>
+      <button id="pin-btn" onclick="togglePin()" title="Pin taskpane" style="background:none; border:none; cursor:pointer; padding:7px 12px; margin-left:auto; display:flex; align-items:center; justify-content:center;">
+        <svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true" role="img" style="color:#107c10; opacity:0.35; --pin-color:#107c10; --unpinned-mixed:color-mix(in srgb,var(--pin-color) 35%,white); color:var(--unpinned-mixed); opacity:1;">
+          <path d="M18 13.04l-1.99-1.992V3.017h1v-2h-10v2h1v8.023h-.009L6 13.04v2h5.01L11 22h2l.01-6.96H18v-2z" fill="currentColor"></path>
+        </svg>
+      </button>
     </div>
   </div>
 
@@ -164,6 +168,8 @@
       loadError:       isSv ? "Kunde inte läsa customProperties: ": "Failed to read customProperties: ",
       savedOk:         isSv ? "Exempeldata sparad i customProperties"
                              : "Sample data saved to customProperties",
+      loadedOk:        isSv ? "Data inläst från customProperties"
+                             : "Data loaded from customProperties",
       fallbackSummary: isSv
         ? "<p>Det här är ett exempel på <strong>summary</strong>. Ingen summary hittades i meddelandets customProperties.</p>"
         : "<p>This is a sample <strong>summary</strong>. No summary was found in the message's customProperties.</p>",
@@ -180,7 +186,7 @@
     document.documentElement.lang = isSv ? "sv" : "en";
 
     // ── Version (hardcoded) ───────────────────────────────────────────────
-    const VERSION = "1.4.0";
+    const VERSION = "1.4.1";
     document.getElementById("footer").textContent = `v${VERSION}`;
 
     // ── State ─────────────────────────────────────────────────────────────
@@ -212,6 +218,7 @@
       let summary  = props.get("summary");
       let actions  = props.get("actions");
       let needsSave = false;
+      let hasExistingData = summary || actions;
 
       if (!summary) { summary = t.fallbackSummary; props.set("summary", summary); needsSave = true; }
       if (!actions) { actions = t.fallbackActions; props.set("actions", actions); needsSave = true; }
@@ -227,7 +234,11 @@
           showContent(summary, actions);
         });
       } else {
-        setStatus("", "");
+        if (hasExistingData) {
+          setStatus(t.loadedOk + " (cecp-357113F9-C204-44CA-A3FC-101588AF3F49)", "ok");
+        } else {
+          setStatus("", "");
+        }
         showContent(summary, actions);
       }
     }
@@ -261,18 +272,20 @@
     function togglePin() {
       isPinned = !isPinned;
       const pinBtn = document.getElementById("pin-btn");
-      pinBtn.classList.toggle("pinned", isPinned);
+      const svg = pinBtn.querySelector("svg");
 
-      // Try to pin/unpin the taskpane using Office.js
-      if (Office.context.ui) {
-        try {
-          if (isPinned) {
-            Office.context.ui.displayDialogAsync("about:blank", { height: 100, width: 100 });
-          }
-        } catch (e) {
-          // Pinning is handled by Outlook UI, this is just visual feedback
-        }
+      if (isPinned) {
+        svg.style.color = "#107c10";
+        svg.style.opacity = "1";
+        pinBtn.title = isSv ? "Lossa taskpane" : "Unpin taskpane";
+      } else {
+        svg.style.color = "color-mix(in srgb, #107c10 35%, white)";
+        svg.style.opacity = "0.35"; // Fallback for browsers that don't support color-mix
+        pinBtn.title = isSv ? "Fäst taskpane" : "Pin taskpane";
       }
+
+      // Note: Actual pinning is handled by Outlook UI
+      // This provides visual feedback to the user
     }
   </script>
 </body>
