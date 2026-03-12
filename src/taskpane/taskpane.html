@@ -89,6 +89,17 @@
     #status.saving { color: #ca5010; }
     #status.ok     { color: #107c10; }
 
+    /* ── Footer ── */
+    #footer {
+      font-size: 10px;
+      color: #ccc;
+      padding: 4px 16px;
+      border-top: 1px solid #f0ede8;
+      background: white;
+      flex-shrink: 0;
+      text-align: right;
+    }
+
     /* ── Loading ── */
     #loading {
       display: flex;
@@ -119,6 +130,8 @@
 
   <div id="status"></div>
 
+  <div id="footer"></div>
+
   <script>
     // ── i18n ──────────────────────────────────────────────────────────────
     const isSv = navigator.language.toLowerCase().startsWith("sv");
@@ -148,6 +161,11 @@
     document.getElementById("tab-summary").textContent = t.tabSummary;
     document.getElementById("meta").textContent        = t.loading;
     document.documentElement.lang = isSv ? "sv" : "en";
+
+    // ── Version from URL query parameter ───────────────────────────────────
+    const urlParams = new URLSearchParams(window.location.search);
+    const version = urlParams.get('v') || 'unknown';
+    document.getElementById("footer").textContent = `v${version}`;
 
     // ── State ─────────────────────────────────────────────────────────────
     let currentTab = "actions";

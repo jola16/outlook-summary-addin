@@ -5,6 +5,12 @@ All notable changes to the Outlook Summary Add-in project are documented in this
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.3.0] - 2026-03-12
+
+### Added
+- Version footer in taskpane that displays add-in version from URL query parameter
+- Users can now see which version of the add-in is installed
+
 ## [1.0.2.0] - 2026-03-12
 
 ### Added
