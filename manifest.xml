@@ -7,7 +7,7 @@
   xsi:type="MailApp">
 
   <Id>357113F9-C204-44CA-A3FC-101588AF3F49</Id>
-  <Version>1.4.2</Version>
+  <Version>1.4.3</Version>
   <ProviderName>Outlook Summary Add-in</ProviderName>
   <DefaultLocale>sv-SE</DefaultLocale>
   <DisplayName DefaultValue="Outlook Summary" />
@@ -32,7 +32,7 @@
   <FormSettings>
     <Form xsi:type="ItemRead">
       <DesktopSettings>
-        <SourceLocation DefaultValue="https://jola16.github.io/outlook-summary-addin/src/taskpane/taskpane.html?v=1.4.2" />
+        <SourceLocation DefaultValue="https://jola16.github.io/outlook-summary-addin/src/taskpane/taskpane.html?v=1.4.3" />
         <RequestedHeight>450</RequestedHeight>
       </DesktopSettings>
     </Form>
@@ -44,7 +44,7 @@
     <Rule xsi:type="ItemIs" ItemType="Message" FormType="Read" />
   </Rule>
 
-  <VersionOverrides xmlns="http://schemas.microsoft.com/office/mailappversionoverrides" xsi:type="VersionOverridesV1_0">
+  <VersionOverrides xmlns="http://schemas.microsoft.com/office/mailappversionoverrides/1.1" xsi:type="VersionOverridesV1_1">
     <Requirements>
       <bt:Sets DefaultMinVersion="1.3">
         <bt:Set Name="Mailbox" />
@@ -91,8 +91,8 @@
         <bt:Image id="Icon.80x80" DefaultValue="https://upload.wikimedia.org/wikipedia/commons/thumb/4/4e/Mail_%28iOS%29.png/64px-Mail_%28iOS%29.png" />
       </bt:Images>
       <bt:Urls>
-        <bt:Url id="FunctionFile.Url" DefaultValue="https://jola16.github.io/outlook-summary-addin/src/taskpane/taskpane.html?v=1.4.0" />
-        <bt:Url id="Taskpane.Url"     DefaultValue="https://jola16.github.io/outlook-summary-addin/src/taskpane/taskpane.html?v=1.4.0" />
+        <bt:Url id="FunctionFile.Url" DefaultValue="https://jola16.github.io/outlook-summary-addin/src/taskpane/taskpane.html?v=1.4.3" />
+        <bt:Url id="Taskpane.Url"     DefaultValue="https://jola16.github.io/outlook-summary-addin/src/taskpane/taskpane.html?v=1.4.3" />
       </bt:Urls>
       <bt:ShortStrings>
         <bt:String id="GroupLabel"           DefaultValue="Outlook Summary" />
