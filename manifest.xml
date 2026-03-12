@@ -2,13 +2,15 @@
 <OfficeApp
   xmlns="http://schemas.microsoft.com/office/appforoffice/1.1"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns:bt="http://schemas.microsoft.com/office/officeappbasictypes/1.0"
+  xmlns:mailappor="http://schemas.microsoft.com/office/mailappversionoverrides/1.0"
   xsi:type="MailApp">
 
   <Id>357113F9-C204-44CA-A3FC-101588AF3F49</Id>
-  <Version>1.0.0.0</Version>
+  <Version>1.0.2.0</Version>
   <ProviderName>Outlook Summary Add-in</ProviderName>
   <DefaultLocale>sv-SE</DefaultLocale>
-  <DisplayName DefaultValue="Mail Insight" />
+  <DisplayName DefaultValue="Outlook Summary" />
   <Description DefaultValue="Visar sammanfattning och åtgärder för vald e-postkonversation." />
   <IconUrl DefaultValue="https://upload.wikimedia.org/wikipedia/commons/thumb/4/4e/Mail_%28iOS%29.png/64px-Mail_%28iOS%29.png" />
   <HighResolutionIconUrl DefaultValue="https://upload.wikimedia.org/wikipedia/commons/thumb/4/4e/Mail_%28iOS%29.png/128px-Mail_%28iOS%29.png" />
@@ -30,7 +32,7 @@
   <FormSettings>
     <Form xsi:type="ItemRead">
       <DesktopSettings>
-        <SourceLocation DefaultValue="https://jola16.github.io/outlook-summary-addin/src/taskpane/taskpane.html" />
+        <SourceLocation DefaultValue="https://jola16.github.io/outlook-summary-addin/src/taskpane/taskpane.html?v=1.0.2.0" />
         <RequestedHeight>450</RequestedHeight>
       </DesktopSettings>
     </Form>
@@ -41,5 +43,65 @@
   <Rule xsi:type="RuleCollection" Mode="Or">
     <Rule xsi:type="ItemIs" ItemType="Message" FormType="Read" />
   </Rule>
+
+  <VersionOverrides xmlns="http://schemas.microsoft.com/office/mailappversionoverrides" xsi:type="VersionOverridesV1_0">
+    <Requirements>
+      <bt:Sets DefaultMinVersion="1.3">
+        <bt:Set Name="Mailbox" />
+      </bt:Sets>
+    </Requirements>
+
+    <Hosts>
+      <Host xsi:type="MailHost">
+        <DesktopFormFactor>
+          <FunctionFile resid="FunctionFile.Url" />
+
+          <ExtensionPoint xsi:type="MessageReadCommandSurface">
+            <OfficeTab id="TabDefault">
+              <Group id="msgReadGroup">
+                <Label resid="GroupLabel" />
+                <Control xsi:type="Button" id="msgReadOpenPaneButton">
+                  <Label resid="TaskpaneButton.Label" />
+                  <Supertip>
+                    <Title resid="TaskpaneButton.Label" />
+                    <Description resid="TaskpaneButton.Tooltip" />
+                  </Supertip>
+                  <Icon>
+                    <bt:Image size="16"  resid="Icon.16x16" />
+                    <bt:Image size="32"  resid="Icon.32x32" />
+                    <bt:Image size="80"  resid="Icon.80x80" />
+                  </Icon>
+                  <Action xsi:type="ShowTaskpane">
+                    <SourceLocation resid="Taskpane.Url" />
+                  </Action>
+                </Control>
+              </Group>
+            </OfficeTab>
+          </ExtensionPoint>
+
+        </DesktopFormFactor>
+      </Host>
+    </Hosts>
+
+    <Resources>
+      <bt:Images>
+        <bt:Image id="Icon.16x16" DefaultValue="https://upload.wikimedia.org/wikipedia/commons/thumb/4/4e/Mail_%28iOS%29.png/16px-Mail_%28iOS%29.png" />
+        <bt:Image id="Icon.32x32" DefaultValue="https://upload.wikimedia.org/wikipedia/commons/thumb/4/4e/Mail_%28iOS%29.png/32px-Mail_%28iOS%29.png" />
+        <bt:Image id="Icon.80x80" DefaultValue="https://upload.wikimedia.org/wikipedia/commons/thumb/4/4e/Mail_%28iOS%29.png/64px-Mail_%28iOS%29.png" />
+      </bt:Images>
+      <bt:Urls>
+        <bt:Url id="FunctionFile.Url" DefaultValue="https://jola16.github.io/outlook-summary-addin/src/taskpane/taskpane.html?v=1.0.2.0" />
+        <bt:Url id="Taskpane.Url"     DefaultValue="https://jola16.github.io/outlook-summary-addin/src/taskpane/taskpane.html?v=1.0.2.0" />
+      </bt:Urls>
+      <bt:ShortStrings>
+        <bt:String id="GroupLabel"           DefaultValue="Outlook Summary" />
+        <bt:String id="TaskpaneButton.Label" DefaultValue="Visa sammanfattning" />
+      </bt:ShortStrings>
+      <bt:LongStrings>
+        <bt:String id="TaskpaneButton.Tooltip" DefaultValue="Visar sammanfattning och åtgärder för vald e-postkonversation." />
+      </bt:LongStrings>
+    </Resources>
+
+  </VersionOverrides>
 
 </OfficeApp>

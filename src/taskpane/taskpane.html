@@ -162,7 +162,7 @@
 
       document.getElementById("subject").textContent = item.subject || t.noSubject;
 
-      item.customProperties.loadAsync(onPropsLoaded);
+      item.loadCustomPropertiesAsync(onPropsLoaded);
     });
 
     // ── customProperties loaded ───────────────────────────────────────────

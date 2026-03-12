@@ -121,6 +121,34 @@ Use English perfect tense without the word "has":
 3. Call `props.saveAsync()` to persist
 4. Always handle async results with proper status updates
 
+#### Syncing Version from CHANGELOG
+
+After DoD checklist updates `CHANGELOG.md` with new version:
+
+1. **Sync version to `manifest.xml`** – Update `<Version>` tag to match CHANGELOG
+2. **Add cache-busting query parameter** – Update `SourceLocation` URLs in `manifest.xml` to include version:
+   ```xml
+   <SourceLocation DefaultValue="https://jola16.github.io/outlook-summary-addin/src/taskpane/taskpane.html?v=1.0.2.0" />
+   ```
+
+**Important**: The version in `manifest.xml` must always match the latest version in `CHANGELOG.md`. Outlook uses this version number to determine if an update is available.
+
+**Cache-Busting Strategy**: Adding `?v=X.Y.Z` to the `SourceLocation` URL forces Outlook to bypass its cache and load the new taskpane.html immediately, rather than waiting for cache expiration. This ensures users get the latest version without delay.
+
+**Workflow Rule**: Do NOT commit `manifest.xml` separately. It should always be commited together with `CHANGELOG.md` in the same commit when the user runs the `/commit-checklist` command. This ensures version synchronization and maintains a clean commit history.
+
+Example:
+```xml
+<!-- manifest.xml -->
+<Version>1.0.2.0</Version>
+<SourceLocation DefaultValue="https://jola16.github.io/outlook-summary-addin/src/taskpane/taskpane.html?v=1.0.2.0" />
+```
+
+```markdown
+<!-- CHANGELOG.md (updated by DoD checklist) -->
+## [1.0.2.0] - 2026-03-12
+```
+
 ## Known Limitations & Considerations
 
 - **Single File Architecture**: All logic is in `taskpane.html` (no build step)
