@@ -25,7 +25,7 @@ A Microsoft Office add-in for Outlook that displays summaries and actionable ite
 3. Update the `SourceLocation` URLs in `manifest.xml` to point to your hosted file
 4. Sideload the `manifest.xml` file in Outlook:
    - **Outlook Desktop**: File → Options → Trust Center → Trust Center Settings → Trusted Add-in Catalogs
-   - **Outlook Web**: Settings → Add-ins → My add-ins → My custom add-ins → Add from file
+   - **Outlook Web**: Go to https://aka.ms/olksideload and upload the manifest.xml file
 
 ## Usage
 
