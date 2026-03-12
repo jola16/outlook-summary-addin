@@ -7,7 +7,7 @@
   xsi:type="MailApp">
 
   <Id>357113F9-C204-44CA-A3FC-101588AF3F49</Id>
-  <Version>1.4.1</Version>
+  <Version>1.4.2</Version>
   <ProviderName>Outlook Summary Add-in</ProviderName>
   <DefaultLocale>sv-SE</DefaultLocale>
   <DisplayName DefaultValue="Outlook Summary" />
@@ -32,7 +32,7 @@
   <FormSettings>
     <Form xsi:type="ItemRead">
       <DesktopSettings>
-        <SourceLocation DefaultValue="https://jola16.github.io/outlook-summary-addin/src/taskpane/taskpane.html?v=1.4.1" />
+        <SourceLocation DefaultValue="https://jola16.github.io/outlook-summary-addin/src/taskpane/taskpane.html?v=1.4.2" />
         <RequestedHeight>450</RequestedHeight>
       </DesktopSettings>
     </Form>

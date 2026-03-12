@@ -5,13 +5,20 @@ All notable changes to the Outlook Summary Add-in project are documented in this
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.4.2] - 2026-03-12
+
+### Added
+- SupportsPinning attribute in manifest.xml to enable taskpane pinning in Outlook
+
+### Changed
+- Bumped version to 1.4.2 to ensure Outlook picks up SupportsPinning configuration
+
 ## [1.4.1] - 2026-03-12
 
 ### Added
 - SVG pin button with visual feedback (dark green #107c10 for pinned, light green for unpinned)
 - Status message when data is loaded from customProperties
 - i18n strings for pin/unpin actions (Swedish: "Fäst taskpane" / "Lossa taskpane")
-- SupportsPinning attribute in manifest.xml to enable taskpane pinning in Outlook
 
 ### Changed
 - Replaced emoji pin button with SVG icon for better visual consistency
