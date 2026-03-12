@@ -77,10 +77,14 @@ All checklist steps must be completed after a code change before the task can be
    - Inline comments where behaviour changed
 
    **4b. Decide on change type and versioning:**
+   - Versioning format: `MAJOR.MINOR.PATCH` (e.g., 1.4.2)
+     - **MAJOR** (first digit): Breaking changes or major feature releases
+     - **MINOR** (second digit): New features or significant enhancements
+     - **PATCH** (third digit): Bug fixes, minor improvements, UI tweaks
    - Decide whether the change is **minor** or **non-trivial**:
-     - **Minor** = tiny fix with no behaviour change and no public surface change.
-     - **Non-trivial** = anything else.
-   - If non-trivial: bump the version number in `pyproject.toml` and add an entry to `CHANGELOG.md`.
+     - **Minor** = tiny fix with no behaviour change and no public surface change. Bump patch version (e.g., 1.2.1 → 1.2.2).
+     - **Non-trivial** = anything else. Bump minor or major version (e.g., 1.2.0 → 1.3.0).
+   - If minor or non-trivial: bump the version number in `pyproject.toml` and add an entry to `CHANGELOG.md`.
      - **Summarize changes** – identify what changed since the last commit (what, why, where) and use this as the entry in `CHANGELOG.md`.
 
    **4c. Update plan files (if applicable):**

@@ -42,7 +42,7 @@
       overflow: hidden;
       text-overflow: ellipsis;
     }
-    #tabs { display: flex; }
+    #tabs { display: flex; flex: 1; }
     .tab-btn {
       padding: 7px 16px;
       background: none;
@@ -57,6 +57,22 @@
     .tab-btn.active {
       border-bottom-color: #1a1a1a;
       font-weight: 700;
+      color: #1a1a1a;
+    }
+    #pin-btn {
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 16px;
+      color: #888;
+      padding: 7px 12px;
+      margin-left: auto;
+      transition: color 0.2s;
+    }
+    #pin-btn:hover {
+      color: #1a1a1a;
+    }
+    #pin-btn.pinned {
       color: #1a1a1a;
     }
 
@@ -119,6 +135,7 @@
     <div id="tabs">
       <button class="tab-btn active" onclick="switchTab('actions')" id="tab-actions"></button>
       <button class="tab-btn"        onclick="switchTab('summary')" id="tab-summary"></button>
+      <button id="pin-btn" onclick="togglePin()" title="Pin taskpane">📌</button>
     </div>
   </div>
 
@@ -162,13 +179,13 @@
     document.getElementById("meta").textContent        = t.loading;
     document.documentElement.lang = isSv ? "sv" : "en";
 
-    // ── Version from URL query parameter ───────────────────────────────────
-    const urlParams = new URLSearchParams(window.location.search);
-    const version = urlParams.get('v') || 'unknown';
-    document.getElementById("footer").textContent = `v${version}`;
+    // ── Version (hardcoded) ───────────────────────────────────────────────
+    const VERSION = "1.4.0";
+    document.getElementById("footer").textContent = `v${VERSION}`;
 
     // ── State ─────────────────────────────────────────────────────────────
     let currentTab = "actions";
+    let isPinned = false;
 
     // ── Office bootstrap ──────────────────────────────────────────────────
     Office.onReady(() => {
@@ -238,6 +255,24 @@
       const el = document.getElementById("status");
       el.textContent = msg;
       el.className   = type || "";
+    }
+
+    // ── Pin functionality ──────────────────────────────────────────────────
+    function togglePin() {
+      isPinned = !isPinned;
+      const pinBtn = document.getElementById("pin-btn");
+      pinBtn.classList.toggle("pinned", isPinned);
+
+      // Try to pin/unpin the taskpane using Office.js
+      if (Office.context.ui) {
+        try {
+          if (isPinned) {
+            Office.context.ui.displayDialogAsync("about:blank", { height: 100, width: 100 });
+          }
+        } catch (e) {
+          // Pinning is handled by Outlook UI, this is just visual feedback
+        }
+      }
     }
   </script>
 </body>

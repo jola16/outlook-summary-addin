@@ -128,10 +128,17 @@ After DoD checklist updates `CHANGELOG.md` with new version:
 1. **Sync version to `manifest.xml`** – Update `<Version>` tag to match CHANGELOG
 2. **Add cache-busting query parameter** – Update `SourceLocation` URLs in `manifest.xml` to include version:
    ```xml
-   <SourceLocation DefaultValue="https://jola16.github.io/outlook-summary-addin/src/taskpane/taskpane.html?v=1.0.2.0" />
+   <SourceLocation DefaultValue="https://jola16.github.io/outlook-summary-addin/src/taskpane/taskpane.html?v=1.0.3.0" />
+   ```
+3. **Update version in taskpane footer** – Update `VERSION` constant in `src/taskpane/taskpane.html`:
+   ```javascript
+   const VERSION = "1.0.3.0";
    ```
 
-**Important**: The version in `manifest.xml` must always match the latest version in `CHANGELOG.md`. Outlook uses this version number to determine if an update is available.
+**Important**: The version must be synchronized across three places:
+- `CHANGELOG.md` (updated by DoD checklist)
+- `manifest.xml` `<Version>` tag and `SourceLocation` query parameter
+- `src/taskpane/taskpane.html` `VERSION` constant (displayed in footer)
 
 **Cache-Busting Strategy**: Adding `?v=X.Y.Z` to the `SourceLocation` URL forces Outlook to bypass its cache and load the new taskpane.html immediately, rather than waiting for cache expiration. This ensures users get the latest version without delay.
 
@@ -140,13 +147,18 @@ After DoD checklist updates `CHANGELOG.md` with new version:
 Example:
 ```xml
 <!-- manifest.xml -->
-<Version>1.0.2.0</Version>
-<SourceLocation DefaultValue="https://jola16.github.io/outlook-summary-addin/src/taskpane/taskpane.html?v=1.0.2.0" />
+<Version>1.0.3.0</Version>
+<SourceLocation DefaultValue="https://jola16.github.io/outlook-summary-addin/src/taskpane/taskpane.html?v=1.0.3.0" />
+```
+
+```javascript
+// src/taskpane/taskpane.html
+const VERSION = "1.0.3.0";
 ```
 
 ```markdown
 <!-- CHANGELOG.md (updated by DoD checklist) -->
-## [1.0.2.0] - 2026-03-12
+## [1.0.3.0] - 2026-03-12
 ```
 
 ## Known Limitations & Considerations
