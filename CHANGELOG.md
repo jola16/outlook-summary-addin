@@ -5,11 +5,23 @@ All notable changes to the Outlook Summary Add-in project are documented in this
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.4.4] - 2026-03-13
+
+### Added
+- ItemChanged event handler for pinned taskpane support
+- updateUIForCurrentItem() function to handle both initial load and item changes
+
+### Changed
+- Refactored Office.onReady to use updateUIForCurrentItem()
+- Registered ItemChanged event on mailbox level (not item level) for proper pinned taskpane behavior
+- UI now updates when user switches between emails while taskpane is pinned
+
 ## [1.4.3] - 2026-03-12
 
 ### Changed
 - Updated VersionOverrides to 1.1 (required for SupportsPinning support)
 - Bumped version to 1.4.3 to ensure Outlook picks up VersionOverrides 1.1 configuration
+- Added dual VersionOverrides support (1.0 for backward compatibility, 1.1 for SupportsPinning)
 
 ## [1.4.2] - 2026-03-12
 

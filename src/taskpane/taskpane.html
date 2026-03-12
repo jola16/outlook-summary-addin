@@ -186,7 +186,7 @@
     document.documentElement.lang = isSv ? "sv" : "en";
 
     // ── Version (hardcoded) ───────────────────────────────────────────────
-    const VERSION = "1.4.3";
+    const VERSION = "1.4.4";
     document.getElementById("footer").textContent = `v${VERSION}`;
 
     // ── State ─────────────────────────────────────────────────────────────
@@ -195,7 +195,19 @@
 
     // ── Office bootstrap ──────────────────────────────────────────────────
     Office.onReady(() => {
+      updateUIForCurrentItem();
+
+      // Register ItemChanged event handler on mailbox for pinned taskpane support
+      Office.context.mailbox.addHandlerAsync(
+        Office.EventType.ItemChanged,
+        onItemChanged
+      );
+    });
+
+    // ── Update UI for current item ─────────────────────────────────────────
+    function updateUIForCurrentItem() {
       const item = Office.context.mailbox.item;
+      if (!item) return;
 
       document.getElementById("meta").textContent =
         (item.from ? item.from.displayName + " - " : "") +
@@ -204,7 +216,12 @@
       document.getElementById("subject").textContent = item.subject || t.noSubject;
 
       item.loadCustomPropertiesAsync(onPropsLoaded);
-    });
+    }
+
+    // ── ItemChanged event handler ──────────────────────────────────────────
+    function onItemChanged(event) {
+      updateUIForCurrentItem();
+    }
 
     // ── customProperties loaded ───────────────────────────────────────────
     function onPropsLoaded(result) {
