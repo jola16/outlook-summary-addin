@@ -5,6 +5,18 @@ All notable changes to the Outlook Summary Add-in project are documented in this
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.4.6] - 2026-03-13
+
+### Changed
+- Converted tab-based layout to vertical stacked layout for Summary and Actions
+- Summary now displays first, followed by Actions, both visible simultaneously
+- Removed tab navigation buttons from header
+- Removed pin button and legacy pin functionality (now using Outlook's built-in pinning)
+
+### Added
+- Settings section placeholder for future configuration options
+- Section titles with uppercase styling for better visual hierarchy
+
 ## [1.4.5] - 2026-03-13
 
 ### Added
