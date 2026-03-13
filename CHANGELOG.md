@@ -5,6 +5,17 @@ All notable changes to the Outlook Summary Add-in project are documented in this
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.4.5] - 2026-03-13
+
+### Added
+- Debug script `debug/read_user_properties.py` for reading Office.js customProperties via win32com MAPI
+- Debug tool `debug/read_custom_properties.html` for reading customProperties from Outlook UI
+- Plan document `plans/2026-03-13 Hur man läser CustomProperties enligt Perplexity.md` with MAPI property format documentation
+
+### Documentation
+- Documented correct MAPI extended property format for customProperties access
+- Added usage instructions for both debug tools (Python script and HTML/Office.js tool)
+
 ## [1.4.4] - 2026-03-13
 
 ### Added
