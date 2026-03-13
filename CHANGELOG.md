@@ -12,6 +12,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Summary now displays first, followed by Actions, both visible simultaneously
 - Removed tab navigation buttons from header
 - Removed pin button and legacy pin functionality (now using Outlook's built-in pinning)
+- Updated subject header to support word-break instead of text-overflow ellipsis
+- Set subject header min-height to two line heights to prevent layout shift
 
 ### Added
 - Settings section placeholder for future configuration options
