@@ -75,6 +75,35 @@ This project does not currently use automated linting tools (no Python, no Node.
 - **CSS**: Follow existing style organization (header, content, status, loading sections)
 - **JavaScript**: Use vanilla JS; avoid external dependencies unless necessary
 
+### Definition of Done (DoD) for This Project
+
+**Important**: This is an HTML/CSS/JavaScript Office Add-in, NOT a Python project. The generic DoD checklist in `.roo/rules/general.md` is Python-focused. For this project, follow this adapted DoD process:
+
+1. **Code Review** – Manual review of HTML, CSS, and JavaScript changes:
+   - Verify HTML is semantic and valid (no console errors in browser)
+   - Check CSS follows existing style patterns (colors, spacing, typography)
+   - Ensure JavaScript is readable and follows existing patterns (vanilla JS, no external deps unless approved)
+   - No linting/formatting tools are used (no ruff, pylint, prettier)
+
+2. **Documentation** – Update relevant documentation:
+   - Update `AGENTS.md` if project scope or structure changes
+   - Add comments in `taskpane.html` for new features or complex logic
+   - Update `README.md` if public-facing behavior changed
+   - Keep `manifest.xml` descriptions accurate and localized
+
+3. **Versioning** – If the change is non-trivial:
+   - Bump version in `CHANGELOG.md` with a summary of what changed
+   - Sync version to `manifest.xml` `<Version>` tag and `SourceLocation` URL (with cache-busting `?v=X.Y.Z`)
+   - Update `VERSION` constant in `src/taskpane/taskpane.html`
+
+4. **Manual Testing** – Before committing:
+   - [ ] Test in Outlook (desktop or web)
+   - [ ] Verify both Swedish and English UI strings
+   - [ ] Check custom properties save/load functionality
+   - [ ] Test error scenarios (network, permissions)
+   - [ ] Validate HTML structure (no console errors)
+   - [ ] Check responsive layout at different pane widths
+
 ### Documentation
 
 - Update this file (`AGENTS.md`) if project scope or structure changes

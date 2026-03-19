@@ -5,6 +5,37 @@ All notable changes to the Outlook Summary Add-in project are documented in this
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.4.8] - 2026-03-19
+
+### Added
+- Markdown-to-HTML conversion in taskpane: content is automatically detected as markdown or HTML
+- DOMPurify sanitization for XSS protection: all HTML is sanitized before rendering to prevent injection attacks
+- Markdown format detection with support for headers, bold, italic, lists, links, and inline code
+- CDN dependencies: marked.js (v11.1.1) for markdown parsing, DOMPurify (v3.0.8) for HTML sanitization
+
+### Changed
+- Modified `showContent()` function to support both markdown and HTML rendering
+- Added `isMarkdown()` detection function to distinguish between markdown and HTML content
+- Sanitization is applied to all content before rendering, preserving all safe HTML formatting
+
+## [1.4.7] - 2026-03-13
+
+### Fixed
+- Fixed fallback data handling: only set fallback summary/actions if property is missing (undefined), not if empty string
+- Empty string values are now preserved instead of being overwritten with fallback text
+
+### Changed
+- Converted tab-based layout to vertical stacked layout for Summary and Actions
+- Summary now displays first, followed by Actions, both visible simultaneously
+- Removed tab navigation buttons from header
+- Removed pin button and legacy pin functionality (now using Outlook's built-in pinning)
+- Updated subject header to support word-break instead of text-overflow ellipsis
+- Set subject header min-height to two line heights to prevent layout shift
+
+### Added
+- Settings section placeholder for future configuration options
+- Section titles with uppercase styling for better visual hierarchy
+
 ## [1.4.6] - 2026-03-13
 
 ### Changed

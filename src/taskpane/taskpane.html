@@ -5,6 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Outlook Summary Add-in</title>
   <script src="https://appsforoffice.microsoft.com/lib/1/hosted/office.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/marked@11.1.1/marked.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/dompurify@3.0.8/dist/purify.min.js"></script>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -178,7 +180,7 @@
     document.documentElement.lang = isSv ? "sv" : "en";
 
     // ── Version (hardcoded) ───────────────────────────────────────────────
-    const VERSION = "1.4.6";
+    const VERSION = "1.4.8";
     document.getElementById("footer").textContent = `v${VERSION}`;
 
     // ── State ─────────────────────────────────────────────────────────────
@@ -228,8 +230,9 @@
       let needsSave = false;
       let hasExistingData = summary || actions;
 
-      if (!summary) { summary = t.fallbackSummary; props.set("summary", summary); needsSave = true; }
-      if (!actions) { actions = t.fallbackActions; props.set("actions", actions); needsSave = true; }
+      // Only set fallback if property is missing (undefined), not if empty string
+      if (summary === undefined) { summary = t.fallbackSummary; props.set("summary", summary); needsSave = true; } else if (!summary) { summary = ""; }
+      if (actions === undefined) { actions = t.fallbackActions; props.set("actions", actions); needsSave = true; } else if (!actions) { actions = ""; }
 
       if (needsSave) {
         setStatus(t.saving, "saving");
@@ -253,11 +256,42 @@
 
     // ── Render ────────────────────────────────────────────────────────────
     function showContent(summary, actions) {
-      document.getElementById("loading").style.display  = "none";
-      document.getElementById("pane-summary").innerHTML = summary;
-      document.getElementById("pane-actions").innerHTML = actions;
+      document.getElementById("loading").style.display = "none";
+
+      // Step 1: Convert markdown to HTML if needed
+      let summaryHTML = isMarkdown(summary) ? marked.parse(summary) : summary;
+      let actionsHTML = isMarkdown(actions) ? marked.parse(actions) : actions;
+
+      // Step 2: ALWAYS sanitize with DOMPurify (default config preserves all safe HTML)
+      summaryHTML = DOMPurify.sanitize(summaryHTML);
+      actionsHTML = DOMPurify.sanitize(actionsHTML);
+
+      // Step 3: Render sanitized HTML
+      document.getElementById("pane-summary").innerHTML = summaryHTML;
+      document.getElementById("pane-actions").innerHTML = actionsHTML;
       document.getElementById("section-summary").style.display = "flex";
       document.getElementById("section-actions").style.display = "flex";
+    }
+
+    // ── Format detection ──────────────────────────────────────────────────
+    function isMarkdown(content) {
+      if (!content || typeof content !== "string") return false;
+
+      // Detect HTML tags first (if present, it's HTML not markdown)
+      if (/<\/?[a-z][\s\S]*>/i.test(content)) return false;
+
+      // Detect markdown patterns
+      const markdownPatterns = [
+        /^#{1,6}\s/m,           // Headers: ## Title
+        /\*\*.*?\*\*/,          // Bold: **text**
+        /\*.*?\*/,              // Italic: *text*
+        /^\s*[-*+]\s/m,         // Unordered list: - item
+        /^\s*\d+\.\s/m,         // Ordered list: 1. item
+        /\[.*?\]\(.*?\)/,       // Links: [text](url)
+        /`.*?`/                 // Code: `code`
+      ];
+
+      return markdownPatterns.some(pattern => pattern.test(content));
     }
 
     function switchTab(tab) {
