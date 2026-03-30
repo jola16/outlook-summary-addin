@@ -5,6 +5,20 @@ All notable changes to the Outlook Summary Add-in project are documented in this
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.4.9] - 2026-03-30
+
+### Changed
+- Removed fallback sample data generation: add-in now only reads existing custom properties
+- Simplified markdown conversion logic: always attempt to parse markdown instead of detecting format
+- Replaced format detection with try-catch error handling for more robust conversion
+
+### Added
+- Local icon assets in `/resources` directory (16x16, 32x32, 80x80 PNG + SVG)
+- Markdown conversion now falls back to raw values if parsing fails
+
+### Fixed
+- Improved error resilience for markdown parsing failures
+
 ## [1.4.8] - 2026-03-19
 
 ### Added

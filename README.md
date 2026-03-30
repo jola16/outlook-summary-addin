@@ -4,12 +4,12 @@ A Microsoft Office add-in for Outlook that displays summaries and actionable ite
 
 ## Features
 
-- **Dual-Tab Interface**: Switch between "Actions" and "Summary" tabs
-- **Custom Properties Storage**: Persists summary and actions data in email metadata
+- **Markdown to HTML Rendering**: Automatically converts markdown-formatted content to HTML with fallback to raw values
+- **Custom Properties Storage**: Reads summary and actions data from email metadata
 - **Bilingual Support**: Automatically detects and displays content in Swedish or English
-- **Graceful Fallbacks**: Provides sample data when no custom properties exist
-- **Status Indicators**: Real-time feedback for loading, saving, and error states
+- **XSS Protection**: All HTML is sanitized with DOMPurify before rendering
 - **Responsive Design**: Adapts to different taskpane widths
+- **Error Resilience**: Gracefully handles markdown conversion failures
 
 ## Installation
 
@@ -82,19 +82,22 @@ const isSv = navigator.language.toLowerCase().startsWith("sv");
 
 ### Custom Properties
 
-The add-in stores data in email custom properties:
-- `summary`: HTML content for the Summary tab
-- `actions`: HTML content for the Actions tab
+The add-in reads data from email custom properties:
+- `summary`: Markdown or HTML content for the Summary section
+- `actions`: Markdown or HTML content for the Actions section
+
+Content is expected in markdown format. If markdown parsing fails, the raw value is displayed.
 
 Access via Office.js:
 ```javascript
 item.loadCustomPropertiesAsync((result) => {
   const props = result.value;
   const summary = props.get("summary");
-  props.set("summary", newValue);
-  props.saveAsync(callback);
+  const actions = props.get("actions");
 });
 ```
+
+**Note**: The add-in is read-only and does not persist data back to custom properties.
 
 ## Testing
 
@@ -102,8 +105,10 @@ Before committing changes, verify:
 
 - [ ] Add-in loads without console errors
 - [ ] Both Swedish and English UI strings display correctly
-- [ ] Tab switching works smoothly
-- [ ] Custom properties save and load correctly
+- [ ] Markdown content is correctly converted to HTML
+- [ ] HTML content is sanitized and rendered safely
+- [ ] Markdown conversion failures fall back to raw values gracefully
+- [ ] Custom properties load correctly
 - [ ] Error scenarios are handled gracefully
 - [ ] Layout is responsive at different pane widths
 - [ ] Tested in both Outlook desktop and web

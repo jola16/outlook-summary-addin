@@ -156,19 +156,8 @@
       tabActions:      isSv ? "Åtgärder"                         : "Actions",
       tabSummary:      isSv ? "Sammanfattning"                     : "Summary",
       tabSettings:     isSv ? "Inställningar"                      : "Settings",
-      saving:          isSv ? "Sparar exempeldata..."              : "Saving sample data...",
-      saveError:       isSv ? "Sparning misslyckades: "            : "Save failed: ",
       loadError:       isSv ? "Kunde inte läsa customProperties: ": "Failed to read customProperties: ",
-      savedOk:         isSv ? "Exempeldata sparad i customProperties"
-                              : "Sample data saved to customProperties",
-      loadedOk:        isSv ? "Data inläst från customProperties"
-                              : "Data loaded from customProperties",
-      fallbackSummary: isSv
-        ? "<p>Det här är ett exempel på <strong>summary</strong>. Ingen summary hittades i meddelandets customProperties.</p>"
-        : "<p>This is a sample <strong>summary</strong>. No summary was found in the message's customProperties.</p>",
-      fallbackActions: isSv
-        ? "<ul><li>Det här är ett exempel på en <strong>action</strong>. Inga actions hittades i meddelandets customProperties.</li></ul>"
-        : "<ul><li>This is a sample <strong>action</strong>. No actions were found in the message's customProperties.</li></ul>",
+      conversionError: isSv ? "Markdown-konvertering misslyckades: " : "Markdown conversion failed: ",
     };
 
     // Apply static i18n strings to DOM
@@ -180,7 +169,7 @@
     document.documentElement.lang = isSv ? "sv" : "en";
 
     // ── Version (hardcoded) ───────────────────────────────────────────────
-    const VERSION = "1.4.8";
+    const VERSION = "1.4.9";
     document.getElementById("footer").textContent = `v${VERSION}`;
 
     // ── State ─────────────────────────────────────────────────────────────
@@ -225,42 +214,38 @@
       }
 
       const props = result.value;
-      let summary  = props.get("summary");
-      let actions  = props.get("actions");
-      let needsSave = false;
-      let hasExistingData = summary || actions;
+      const summary = props.get("summary") || "";
+      const actions = props.get("actions") || "";
 
-      // Only set fallback if property is missing (undefined), not if empty string
-      if (summary === undefined) { summary = t.fallbackSummary; props.set("summary", summary); needsSave = true; } else if (!summary) { summary = ""; }
-      if (actions === undefined) { actions = t.fallbackActions; props.set("actions", actions); needsSave = true; } else if (!actions) { actions = ""; }
-
-      if (needsSave) {
-        setStatus(t.saving, "saving");
-        props.saveAsync((saveResult) => {
-          if (saveResult.status !== Office.AsyncResultStatus.Succeeded) {
-            setStatus(t.saveError + saveResult.error.message, "error");
-          } else {
-            setStatus(t.savedOk + " (cecp-357113F9-C204-44CA-A3FC-101588AF3F49)", "ok");
-          }
-          showContent(summary, actions);
-        });
-      } else {
-        if (hasExistingData) {
-          setStatus(t.loadedOk + " (cecp-357113F9-C204-44CA-A3FC-101588AF3F49)", "ok");
-        } else {
-          setStatus("", "");
-        }
-        showContent(summary, actions);
-      }
+      setStatus("", "");
+      showContent(summary, actions);
     }
 
     // ── Render ────────────────────────────────────────────────────────────
     function showContent(summary, actions) {
       document.getElementById("loading").style.display = "none";
 
-      // Step 1: Convert markdown to HTML if needed
-      let summaryHTML = isMarkdown(summary) ? marked.parse(summary) : summary;
-      let actionsHTML = isMarkdown(actions) ? marked.parse(actions) : actions;
+      // Step 1: Try to convert markdown to HTML with fallback to raw value on error
+      let summaryHTML = summary;
+      let actionsHTML = actions;
+
+      if (summary) {
+        try {
+          summaryHTML = marked.parse(summary);
+        } catch (err) {
+          setStatus(t.conversionError + err.message, "error");
+          summaryHTML = summary; // fallback to raw value
+        }
+      }
+
+      if (actions) {
+        try {
+          actionsHTML = marked.parse(actions);
+        } catch (err) {
+          setStatus(t.conversionError + err.message, "error");
+          actionsHTML = actions; // fallback to raw value
+        }
+      }
 
       // Step 2: ALWAYS sanitize with DOMPurify (default config preserves all safe HTML)
       summaryHTML = DOMPurify.sanitize(summaryHTML);
@@ -269,29 +254,8 @@
       // Step 3: Render sanitized HTML
       document.getElementById("pane-summary").innerHTML = summaryHTML;
       document.getElementById("pane-actions").innerHTML = actionsHTML;
-      document.getElementById("section-summary").style.display = "flex";
-      document.getElementById("section-actions").style.display = "flex";
-    }
-
-    // ── Format detection ──────────────────────────────────────────────────
-    function isMarkdown(content) {
-      if (!content || typeof content !== "string") return false;
-
-      // Detect HTML tags first (if present, it's HTML not markdown)
-      if (/<\/?[a-z][\s\S]*>/i.test(content)) return false;
-
-      // Detect markdown patterns
-      const markdownPatterns = [
-        /^#{1,6}\s/m,           // Headers: ## Title
-        /\*\*.*?\*\*/,          // Bold: **text**
-        /\*.*?\*/,              // Italic: *text*
-        /^\s*[-*+]\s/m,         // Unordered list: - item
-        /^\s*\d+\.\s/m,         // Ordered list: 1. item
-        /\[.*?\]\(.*?\)/,       // Links: [text](url)
-        /`.*?`/                 // Code: `code`
-      ];
-
-      return markdownPatterns.some(pattern => pattern.test(content));
+      if (summary) document.getElementById("section-summary").style.display = "flex";
+      if (actions) document.getElementById("section-actions").style.display = "flex";
     }
 
     function switchTab(tab) {
