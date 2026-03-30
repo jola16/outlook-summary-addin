@@ -12,8 +12,8 @@
   <DefaultLocale>sv-SE</DefaultLocale>
   <DisplayName DefaultValue="Outlook Summary" />
   <Description DefaultValue="Visar sammanfattning och åtgärder för vald e-postkonversation." />
-  <IconUrl DefaultValue="https://upload.wikimedia.org/wikipedia/commons/thumb/4/4e/Mail_%28iOS%29.png/64px-Mail_%28iOS%29.png" />
-  <HighResolutionIconUrl DefaultValue="https://upload.wikimedia.org/wikipedia/commons/thumb/4/4e/Mail_%28iOS%29.png/128px-Mail_%28iOS%29.png" />
+  <IconUrl DefaultValue="https://jola16.github.io/outlook-summary-addin/resources/short_summary_32.png" />
+  <HighResolutionIconUrl DefaultValue="https://jola16.github.io/outlook-summary-addin/resources/short_summary_80.png" />
   <SupportUrl DefaultValue="https://jola16.github.io/outlook-summary-addin" />
   <AppDomains>
     <AppDomain>https://jola16.github.io</AppDomain>
@@ -89,13 +89,13 @@
 
     <Resources>
       <bt:Images>
-        <bt:Image id="Icon.16x16" DefaultValue="https://upload.wikimedia.org/wikipedia/commons/thumb/4/4e/Mail_%28iOS%29.png/16px-Mail_%28iOS%29.png" />
-        <bt:Image id="Icon.32x32" DefaultValue="https://upload.wikimedia.org/wikipedia/commons/thumb/4/4e/Mail_%28iOS%29.png/32px-Mail_%28iOS%29.png" />
-        <bt:Image id="Icon.80x80" DefaultValue="https://upload.wikimedia.org/wikipedia/commons/thumb/4/4e/Mail_%28iOS%29.png/64px-Mail_%28iOS%29.png" />
+        <bt:Image id="Icon.16x16" DefaultValue="https://jola16.github.io/outlook-summary-addin/resources/short_summary_16.png" />
+        <bt:Image id="Icon.32x32" DefaultValue="https://jola16.github.io/outlook-summary-addin/resources/short_summary_32.png" />
+        <bt:Image id="Icon.80x80" DefaultValue="https://jola16.github.io/outlook-summary-addin/resources/short_summary_80.png" />
       </bt:Images>
       <bt:Urls>
-        <bt:Url id="FunctionFile.Url" DefaultValue="https://jola16.github.io/outlook-summary-addin/src/taskpane/taskpane.html?v=1.4.6" />
-        <bt:Url id="Taskpane.Url"     DefaultValue="https://jola16.github.io/outlook-summary-addin/src/taskpane/taskpane.html?v=1.4.6" />
+        <bt:Url id="FunctionFile.Url" DefaultValue="https://jola16.github.io/outlook-summary-addin/src/taskpane/taskpane.html?v=1.4.8" />
+        <bt:Url id="Taskpane.Url"     DefaultValue="https://jola16.github.io/outlook-summary-addin/src/taskpane/taskpane.html?v=1.4.8" />
       </bt:Urls>
       <bt:ShortStrings>
         <bt:String id="GroupLabel"           DefaultValue="Outlook Summary" />
@@ -151,13 +151,13 @@
 
       <Resources>
         <bt:Images>
-          <bt:Image id="Icon.16x16" DefaultValue="https://upload.wikimedia.org/wikipedia/commons/thumb/4/4e/Mail_%28iOS%29.png/16px-Mail_%28iOS%29.png" />
-          <bt:Image id="Icon.32x32" DefaultValue="https://upload.wikimedia.org/wikipedia/commons/thumb/4/4e/Mail_%28iOS%29.png/32px-Mail_%28iOS%29.png" />
-          <bt:Image id="Icon.80x80" DefaultValue="https://upload.wikimedia.org/wikipedia/commons/thumb/4/4e/Mail_%28iOS%29.png/64px-Mail_%28iOS%29.png" />
+          <bt:Image id="Icon.16x16" DefaultValue="https://jola16.github.io/outlook-summary-addin/resources/short_summary_16.png" />
+          <bt:Image id="Icon.32x32" DefaultValue="https://jola16.github.io/outlook-summary-addin/resources/short_summary_32.png" />
+          <bt:Image id="Icon.80x80" DefaultValue="https://jola16.github.io/outlook-summary-addin/resources/short_summary_80.png" />
         </bt:Images>
         <bt:Urls>
-          <bt:Url id="FunctionFile.Url" DefaultValue="https://jola16.github.io/outlook-summary-addin/src/taskpane/taskpane.html?v=1.4.3" />
-          <bt:Url id="Taskpane.Url"     DefaultValue="https://jola16.github.io/outlook-summary-addin/src/taskpane/taskpane.html?v=1.4.3" />
+          <bt:Url id="FunctionFile.Url" DefaultValue="https://jola16.github.io/outlook-summary-addin/src/taskpane/taskpane.html?v=1.4.8" />
+          <bt:Url id="Taskpane.Url"     DefaultValue="https://jola16.github.io/outlook-summary-addin/src/taskpane/taskpane.html?v=1.4.8" />
         </bt:Urls>
         <bt:ShortStrings>
           <bt:String id="GroupLabel"           DefaultValue="Outlook Summary" />
