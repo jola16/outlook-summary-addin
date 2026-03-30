@@ -28,20 +28,19 @@ outlook-summary-addin/
 ### What This Project Does
 
 1. **Taskpane UI**: Displays a sidebar in Outlook when reading an email message
-2. **Dual-Tab Interface**:
-   - "Actions" tab: Shows actionable items extracted from the email
-   - "Summary" tab: Shows a summary of the email conversation
-3. **Custom Properties Storage**: Stores summary and actions data in the email's `customProperties`
-4. **Bilingual Support**: Automatically detects user language (Swedish/English)
-5. **Fallback Content**: Provides sample data if no custom properties exist
+2. **Vertical Layout**: Shows Summary and Actions sections stacked vertically (no tabs)
+3. **Markdown Rendering**: Reads markdown-formatted content from email custom properties and converts to HTML
+4. **Read-Only Design**: Loads data from email custom properties; does NOT write back
+5. **Bilingual Support**: Automatically detects user language (Swedish/English)
 
 ### Key Features
 
 - Responsive taskpane with header, content area, and status bar
-- Tab-based navigation between actions and summary
-- Status indicators (loading, saving, error, success states)
-- Graceful error handling with user-facing messages
-- Automatic data persistence via Office API
+- Markdown-to-HTML conversion with DOMPurify sanitization
+- Graceful error handling with fallback to raw values if markdown parsing fails
+- XSS protection via DOMPurify sanitization of all HTML
+- Automatic language detection based on browser locale
+- Local icon assets (16x16, 32x32, 80x80) served from GitHub Pages
 
 ## Agent Guidelines
 
@@ -99,10 +98,13 @@ This project does not currently use automated linting tools (no Python, no Node.
 4. **Manual Testing** – Before committing:
    - [ ] Test in Outlook (desktop or web)
    - [ ] Verify both Swedish and English UI strings
-   - [ ] Check custom properties save/load functionality
-   - [ ] Test error scenarios (network, permissions)
+   - [ ] Check markdown conversion (test with markdown and HTML content)
+   - [ ] Verify HTML is sanitized and XSS-safe
+   - [ ] Test custom properties loading (read-only)
+   - [ ] Test error scenarios (network, permissions, markdown parsing failures)
    - [ ] Validate HTML structure (no console errors)
    - [ ] Check responsive layout at different pane widths
+   - [ ] Verify icons load correctly from resources/
 
 ### Documentation
 
@@ -121,13 +123,19 @@ Use English perfect tense without the word "has":
 
 ### Common Tasks
 
-#### Adding a New Tab
+#### Adding a New Section
 
-1. Add button to `#tabs` div in HTML
-2. Add corresponding pane div (`#pane-<name>`)
-3. Add i18n string to `t` object
-4. Update `switchTab()` function logic
-5. Test tab switching in Outlook
+1. Add section div to content area (`#pane-<name>`)
+2. Add i18n string to `t` object
+3. Update `showContent()` function to populate the section
+4. Test in Outlook
+
+#### Modifying Markdown Conversion
+
+1. Edit the `marked.parse()` call in `showContent()`
+2. Ensure try-catch wraps conversion with fallback to raw value
+3. Always sanitize output with `DOMPurify.sanitize()`
+4. Test with various markdown formats and edge cases
 
 #### Modifying Styling
 
@@ -143,12 +151,12 @@ Use English perfect tense without the word "has":
 3. Use `isSv` variable for language detection
 4. Test with browser language settings
 
-#### Handling Custom Properties
+#### Handling Custom Properties (Read-Only)
 
 1. Use `item.loadCustomPropertiesAsync()` to load
-2. Use `props.get()` and `props.set()` for access
-3. Call `props.saveAsync()` to persist
-4. Always handle async results with proper status updates
+2. Use `props.get()` for read-only access
+3. Never use `props.set()` or `props.saveAsync()` (add-in is read-only)
+4. Always handle async results with proper status messages
 
 #### Syncing Version from CHANGELOG
 
